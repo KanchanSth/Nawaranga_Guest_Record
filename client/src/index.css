@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+.formContainer{
+  @apply md:container mx-auto my-2 rounded-xl p-15 bg-white md:w-1/2 md:h-1/4 
+}
+.updateFormContainer{
+  @apply md:container mx-auto my-2 rounded-xl p-15 bg-white md:w-1/2 md:h-1/4 
+}
+.label{
+    @apply my-3 text-violet-800
+}
+
+.inputGroup {
+  @apply flex flex-col w-full mb-2;
+}
+
+.inputField {
+  @apply w-full border border-violet-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-violet-800 text-violet-800 
+}
+
+.save{
+    @apply md:w-100 mx-auto bg-center bg-violet-700 text-white font-bold py-3 px-6 rounded-lg mt-3 hover:bg-violet-600 transition ease-in-out duration-300
+}
+
+.guestInfoTable{
+   @apply  md:container  md:w-2/3  bg-white  mx-auto my-5 border p-5 border-gray-200 rounded-lg overflow-x-auto
+}
+.table{
+  @apply min-w-full border border-gray-200 rounded-lg mx-auto
+}
+.thead{
+  @apply bg-violet-200 bg-center 
+}
+.th{
+  @apply px-4 py-4 text-left text-sm font-semibold text-violet-800
+}
+.tbody{
+  @apply bg-white divide-y divide-gray-200
+}
+.tr{
+  @apply hover:bg-violet-50
+}
+
+.td{
+  @apply px-4 py-4  text-violet-700
+}
+
+.actionsButton{
+   @apply px-4 py-2 flex gap-2
+}
+
+.noData{
+  @apply flex justify-center font-semibold text-violet-800
+}
