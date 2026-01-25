@@ -1,9 +1,13 @@
 
 import express from "express"
-import mongoose from "mongoose"
 import dotenv from 'dotenv'
 import route from './routes/guestDataRoutes.js'
 import cors from "cors"
+import dbConnect from "./config/dbConnect.js"
+import authRoutes from "./routes/authRoutes.js"
+import userRoutes from "./routes/userRoutes.js"
+
+dbConnect();
 
 const app = express();
 app.use(cors());
@@ -11,29 +15,15 @@ app.use(cors());
 dotenv.config();
 
 const PORT = process.env.PORT || 7000;
-const MONGOURL = process.env.MONGO_URL;
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-
-
-app.get('/test', (req, res) => {
-    res.json({ message: 'Server is working!' });
-});
-
-console.log('Registering /api routes...');
-
+ 
 app.use("/api",route);
+app.use("/api/auth",authRoutes);
+app.use("/api/users",userRoutes);
 
-
-mongoose
-        .connect(MONGOURL)
-        .then(
-            ()=>{
-                console.log("DB Connected Successfully!!!")
-                app.listen(PORT,()=>{
+app.listen(PORT,()=>{
                     console.log(`Server is running on port :: ${PORT}`)
                 });
-            }
-        ).catch((e)=>{console.log(e)});
-

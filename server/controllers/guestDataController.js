@@ -1,4 +1,4 @@
-import GuestData from "../model/guestInfoModel.js"
+import GuestData from "../models/guestInfoModel.js"
 
 export const create = async(req,res)=>{
   try {
