@@ -1,4 +1,5 @@
 import React from "react";
+import { FaChevronDown } from "react-icons/fa";
 
 export type Role = "admin" | "manager" | "user";
 
@@ -14,17 +15,23 @@ const RoleDropdown: React.FC<RoleDropdownProps> = ({
   onKeyDown,
 }) => {
   return (
+    <div className="relative">
     <select
       value={value}
       onChange={(e) => onChange(e.target.value as Role)}
       onKeyDown={onKeyDown}
-      className="inputField"
+      className="inputField pr-10 appearance-none"
     >
-      <option value="">Select role</option>
+      <option value="" disabled>Select role</option>
       <option value="admin">Admin</option>
       <option value="manager">Manager</option>
       <option value="user">User</option>
     </select>
+    <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-500 text-sm">
+          <FaChevronDown />
+        </span>
+
+        </div>
   );
 };
 

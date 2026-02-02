@@ -9,18 +9,28 @@ import type {GuestInfoRespnseModel} from "./getGuestInfoModel"
 import Navbar from '../auth/components/Navbar';
 import { getUser } from '../utils/auth';
 
-const GetGuestInfo = () => {
+const GetGuestInfo : React.FC = () => {
     const user = getUser(); 
+    let token =   localStorage.getItem("token");
     const [guestsInfo, setGuestInfo] = useState<GuestInfoRespnseModel[]>([])
     useEffect(() => {
       const fetchData = async () => {
 
         try {
 
-         const response = await axios.get("http://localhost:8000/api/guestsInfo");
+         const response = await axios.get("http://localhost:8000/api/guestsInfo",
+
+          {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
          setGuestInfo(response.data);
             
-        } catch (error) {
+        } catch (error: any) {
+           const message = error.response?.data?.message || "Error while fetching data";
+          
+            toast.error(message, { position: "top-right" });
           console.log("Error while fetching data", error)  
         }
         
@@ -28,6 +38,8 @@ const GetGuestInfo = () => {
       fetchData();
     }, [])
 
+
+  
     const handleDelete = (id: string) => {
   const isConfirmed = window.confirm("Are you sure you want to delete this guest?");
 
@@ -38,7 +50,14 @@ const GetGuestInfo = () => {
 
 
     const deleteGuestInfo = async (guestId : string)=>{
-        await axios.delete(`http://localhost:8000/api/delete/guest/${guestId}`)
+        await axios.delete(`http://localhost:8000/api/delete/guest/${guestId}`,
+
+          {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+        )
         .then((res)=>{
             setGuestInfo((prevRecord)=>prevRecord.filter((guest)=>guest._id !== guestId))
             toast.success(res.data.message, {position: "top-right"})
@@ -50,7 +69,7 @@ const GetGuestInfo = () => {
       <Navbar/>
     <div className="guestInfoTable">
       
-      <Link to='/add' type="button" className="flex gap-1 mx-2 my-3 text-center border border-violet-600 justify-center md:text-[15px] hover:text-violet-800 rounded-xs py-2  px-2 w-30 font-header  text-violet-950 text-2xl  bg-violet cursor-pointer ">Add Guest <AiOutlineUserAdd className='text-2xl'/></Link>
+      <Link to='/add' replace type="button" className="rounded-md  flex gap-1 mx-2 my-3 text-sm font-semibold text-center border border-violet-600 justify-center md:text-[15px] hover:text-violet-800 py-2  px-2 w-30 font-header  text-violet-950  bg-violet cursor-pointer ">Add Guest <AiOutlineUserAdd className='text-2xl'/></Link>
 
 {guestsInfo.length ===0 ? (
     <div className='noData'>
@@ -78,7 +97,7 @@ const GetGuestInfo = () => {
                 {
                     guestsInfo.map((guest,index)=>{
                         return(
-                            <tr className='tr'>
+                            <tr key={guest._id} className='tr'>
                     <td className='td'>{index+1}</td>
                     <td className='td'>{guest.room_no}</td>
                     <td className='td'>{guest.name}</td>

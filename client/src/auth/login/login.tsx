@@ -4,6 +4,7 @@ import axios from 'axios'
 import {Link, useNavigate } from 'react-router-dom'
 import toast from "react-hot-toast"
 import type {LoginModel} from "./loginModel"
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 const LogIn = () => {
     const loginModel: LoginModel = {
         email: "",
@@ -16,7 +17,15 @@ const LogIn = () => {
       const emailRef = useRef<HTMLInputElement>(null);
      
 
+      const [showPassword, setShowPassword] = useState(false);
+        const [userInfo, setUserInfo] = useState(loginModel);
+          const navigate = useNavigate();
       
+      
+      
+      const [errors, setErrors] = useState<FormFieldErrors>({});
+      
+
       useEffect(() => {
         emailRef.current?.focus(); 
       }, []);
@@ -26,13 +35,7 @@ const LogIn = () => {
         email?: string;
       
       }
-          const [userInfo, setUserInfo] = useState(loginModel);
-          const navigate = useNavigate();
-      
-      
-      
-      const [errors, setErrors] = useState<FormFieldErrors>({});
-      
+        
       const validate = (): boolean => {
         const tempErrors: FormFieldErrors = {};
       
@@ -92,14 +95,15 @@ const LogIn = () => {
         try {
           const res = await axios.post("http://localhost:8000/api/auth/login", userInfo);
           toast.success(res.data.message, { position: "top-right" });
+          
           localStorage.setItem("token", res.data.token);
 
           console.log("Login successfully!");
-          window.location.href = "/";
-         // navigate("/",{ replace: true });
-        } catch (error) {
-          console.log(error);
-           toast.error("Something went wrong!", { position: "top-right" });
+          navigate("/",{ replace: true });
+        } catch (error: any) {
+        const message = error.response?.data?.message || "Something went wrong";
+
+  toast.error(message, { position: "top-right" });
         }
       };
        
@@ -125,16 +129,16 @@ const LogIn = () => {
       
   return (
     <div className='formContainer'>
-        <h3 className='text-center text-4xl text-violet-800 mx-auto '> Welcome </h3>
+        <h3 className='text-center text-4xl text-[#163152] font-bold mx-auto '> Welcome </h3>
 
         <div className="flex items-center justify-center gap-2 mt-6">
-          <p className="text-lg text-violet-800 m-0">
+          <p className="text-lg text-[#163152] m-0">
             Don't have an account?
           </p>
         
           <Link
-            to="/registeration"
-            className="inline text-lg font-semibold text-violet-600 hover:text-violet-800 hover:underline p-0 m-0"
+            to="/registeration" replace
+            className="inline text-lg font-semibold text-[#163152] hover:text-[#ff8502] hover:underline p-0 m-0"
           >
             Sign Up
           </Link>
@@ -153,8 +157,18 @@ const LogIn = () => {
 
               <div className="inputGroup">
                 <label className='label'>Password</label>
-                <input  ref={passwordRef}
-       onKeyDown={(e) => handleEnterPress(e, undefined, true)} className='inputField' type="text" onChange={inputHandler} id='password' name='password' autoComplete='off' placeholder='Enter Password' />
+                <div className="relative">
+                <input  ref={passwordRef}  type={showPassword ? "text" : "password"}
+       onKeyDown={(e) => handleEnterPress(e, undefined, true)} className='inputField pr-100'  onChange={inputHandler} id='password' name='password' autoComplete='off' placeholder='Enter Password' /> 
+      
+       <button
+      type="button"
+      onClick={() => setShowPassword((prev) => !prev)}
+      className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+    >
+      {showPassword ? <FaEye /> :  <FaEyeSlash />}
+    </button>
+  </div>
        {errors.password && <p className="text-red-600 text-sm">{errors.password}</p>}
       
              </div>

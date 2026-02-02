@@ -89,7 +89,7 @@ const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
   setErrors(tempErrors);
 };
 
-
+ let token =   localStorage.getItem("token");
 
 const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
@@ -97,13 +97,21 @@ const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
   if (!validate()) return;
 
   try {
-    const res = await axios.put(`http://localhost:8000/api/update/guest/${id}`, guestInfo);
+    const res = await axios.put(`http://localhost:8000/api/update/guest/${id}`, guestInfo,
+       {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     toast.success(res.data.message, { position: "top-right" });
     console.log("Guest Information Updated successfully!");
-    navigate("/");
-  } catch (error) {
+    navigate("/", {replace: true});
+  } catch (error: any) {
     console.log(error);
-     toast.error("Something went wrong!", { position: "top-right" });
+ const message = error.response?.data?.message || "Something went wrong";
+
+  toast.error(message, { position: "top-right" });
   }
 };
  
@@ -133,7 +141,11 @@ const handleEnterPress = (
 
     useEffect(() => {
       
-    axios.get(`http://localhost:8000/api/guest/${id}`)
+    axios.get(`http://localhost:8000/api/guest/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
     .then((res)=>{
         setGuestInfo(res.data)
 
@@ -148,8 +160,8 @@ const handleEnterPress = (
     
     <div className='updateFormContainer'>
     
-<Link to="/" type="button" className="flex gap-2 mx-2 my-2 text-center border border-violet-600 justify-center md:text-[15px] hover:text-violet-800 rounded-xs  px-4  w-20 font-header  text-violet-950  py-3 bg-violet   cursor-pointer  "> <IoIosArrowBack className="text-2xl" /> Back</Link>
-    <h3 className='text-center text-4xl text-violet-800 mx-auto '>Update Guest Information</h3>
+<Link to="/" replace type="button" className="flex gap-2 mx-2 my-2 text-center border border-violet-600 justify-center md:text-[15px] hover:text-violet-800 rounded-xs  px-4  w-20 font-header  text-violet-950  py-3 bg-violet   cursor-pointer  "> <IoIosArrowBack className="text-2xl" /> Back</Link>
+    <h3 className='text-center text-4xl font-semibold text-[#163152] mx-auto '>Update Guest Information</h3>
     <form action="" className="updateGuestInfo" onSubmit={submitForm}>
          <div className="inputGroup">
             <label  className='label' htmlFor="room_no">Room No</label>

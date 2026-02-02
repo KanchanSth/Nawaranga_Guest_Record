@@ -18,8 +18,8 @@ console.log(`The decoded user is: ${token}`);
 
         try {
 
-            const decode = jwt.verify(token,process.env.JWT_SECRET);
-            req.authUser = decode;
+            const decoded = jwt.verify(token,process.env.JWT_SECRET);
+            req.authUser = decoded;
             console.log("The decoded user is:", req.authUser);
             //  res.status(200).json({message:` The token is : ${token} decoded user is: ${req.authUser}`});
             next(); 

@@ -6,6 +6,11 @@ import bcrypt from "bcryptjs"
  export  const register = async(req,res) =>{
   try{
       const {name, email, password, role} = req.body;
+
+       const userExist = await User.findOne({email})
+          if(userExist){
+              return res.status(400).json({message: "User already exists"});
+          }
    const hashedPassword = await bcrypt.hash(password, 9);
 
    const newUser = new User({name, email, password: hashedPassword, role});
@@ -20,13 +25,13 @@ import bcrypt from "bcryptjs"
 
  }
 export const login = async(req,res) =>{
-     try{
+   try{
         const {email, password} = req.body;
 
      const user = await User.findOne({email})
-
+console.log(`The user is: ${user}`); 
      if(!user){
-      return res.status(404).json({message: `User with name ${user.name} not found`})
+      return res.status(404).json({message: `User not found`})
      }
 
      const isMatched = await bcrypt.compare(password, user.password)
@@ -41,7 +46,7 @@ export const login = async(req,res) =>{
 
      res.status(200).json({token, message:`Welcome ${user.name}`})
 
-     }
+   }
 
      catch(e){
         res.status(500).json({message: `Something went wrong`})

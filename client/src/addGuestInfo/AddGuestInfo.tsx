@@ -8,8 +8,7 @@ import { IoIosArrowBack } from "react-icons/io";
 
 
 const AddGuestInfo = () => {
-
-
+let token =   localStorage.getItem("token");
   const guestDataModel: GuestInfoModel = {
     room_no:"",
     passport_no: "",
@@ -99,13 +98,24 @@ const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
   if (!validate()) return;
 
   try {
-    const res = await axios.post("http://localhost:8000/api/guestInfo", guestInfo);
+    const res = await axios.post("http://localhost:8000/api/guestInfo" ,
+      guestInfo,
+
+          {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      
+      }, );
     toast.success(res.data.message, { position: "top-right" });
     console.log("Guest data added successfully!");
-    navigate("/");
-  } catch (error) {
+    navigate("/", {replace: true});
+  } catch (error:any) {
     console.log(error);
-     toast.error("Something went wrong!", { position: "top-right" });
+     const message = error.response?.data?.message || "Something went wrong";
+
+  toast.error(message, { position: "top-right" });
+  
   }
 };
  
@@ -135,8 +145,8 @@ const handleEnterPress = (
 
   return (
     <div className='formContainer'>
-<Link to="/" type="button" className="flex gap-2 mx-2 my-2 text-center border border-violet-600 justify-center md:text-[15px] hover:text-violet-800 rounded-xs  px-4  w-20 font-header  text-violet-950  py-3 bg-violet   cursor-pointer  "> <IoIosArrowBack className="text-2xl" /> Back</Link>
-    <h3 className='text-center text-4xl text-violet-800 mx-auto '>Add Guest </h3>
+<Link to="/" replace type="button" className="rounded-md  flex gap-2 mx-2 my-2 text-center border border-[#163152] justify-center md:text-[15px] hover:text-violet-800 px-4  w-20 font-header  text-violet-950  py-3 bg-violet   cursor-pointer  "> <IoIosArrowBack className="text-2xl text-[#163152]" /> Back</Link>
+    <h3 className='text-center text-4xl font-semibold text-[#163152] '>Add Guest </h3>
     <form action="" className="addGuestForm" onSubmit={submitForm}>
         <div className="inputGroup">
             <label className='label' >Room No </label>

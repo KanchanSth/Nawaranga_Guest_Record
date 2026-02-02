@@ -9,7 +9,7 @@ const useAutoLogout = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (!token) return; // ✅ STOP here
+    if (!token) return; 
 
     try {
       const decoded = jwtDecode<DecodedToken>(token);

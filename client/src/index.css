@@ -7,7 +7,7 @@
   @apply md:container mx-auto my-2 rounded-xl p-15 bg-white md:w-1/2 md:h-1/4 
 }
 .label{
-    @apply my-3 text-violet-800
+    @apply my-3 text-[#163152] font-semibold
 }
 
 .inputGroup {
@@ -15,15 +15,15 @@
 }
 
 .inputField {
-  @apply w-full border border-violet-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-violet-800 text-violet-800 
+  @apply w-full border border-violet-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#163152] text-[#163152] 
 }
 
 .save{
-    @apply md:w-100 mx-auto bg-center bg-violet-700 text-white font-bold py-3 px-6 rounded-lg mt-3 hover:bg-violet-600 transition ease-in-out duration-300
+    @apply md:w-100 mx-auto bg-center bg-[#163152] text-white font-semibold py-4 px-6 rounded-lg mt-3 hover:bg-[#ff8502] transition ease-in-out duration-300
 }
 
 .guestInfoTable{
-   @apply  md:container  md:w-2/3  bg-white  mx-auto my-5 border p-5 border-gray-200 rounded-lg overflow-x-auto
+   @apply  md:container  md:w-2/3  bg-white  mx-auto my-5 border p-5 border-violet-200 rounded-lg overflow-x-auto
 }
 .table{
   @apply min-w-full border border-gray-200 rounded-lg mx-auto
@@ -32,7 +32,7 @@
   @apply bg-violet-200 bg-center 
 }
 .th{
-  @apply px-4 py-4 text-left text-sm font-semibold text-violet-800
+  @apply px-4 py-4 text-left text-sm font-semibold text-[#163152]
 }
 .tbody{
   @apply bg-white divide-y divide-gray-200
@@ -42,7 +42,7 @@
 }
 
 .td{
-  @apply px-4 py-4  text-violet-700
+  @apply px-4 py-4  text-[#163152]
 }
 
 .actionsButton{
@@ -50,5 +50,5 @@
 }
 
 .noData{
-  @apply flex justify-center font-semibold text-violet-800
+  @apply flex justify-center font-semibold text-[#163152]
 }
